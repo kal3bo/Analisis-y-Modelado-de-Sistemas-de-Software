@@ -1,0 +1,32 @@
+#include <iostream>
+#include <time.h>
+
+using namespace std;
+
+class Clock {
+private:
+	Clock() { instance = this; }
+	static Clock * instance;
+	
+public:
+		static Clock * getTime() {
+		static Clock instance;
+		return &instance;
+	}
+	char* test() {
+		time_t actualtime;
+		time(&actualtime);
+		return ctime(&actualtime);
+	}
+};
+Clock * Clock::instance = 0;
+
+int main() {
+	char * testClass;
+	Clock * c = Clock::getTime();
+	testClass = c->test();
+	cout << testClass << endl;
+	
+	system("pause");
+	return 0;
+}
