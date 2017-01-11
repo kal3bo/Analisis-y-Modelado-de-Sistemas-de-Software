@@ -1,0 +1,22 @@
+#include <iostream>
+#include <time.h>
+
+using namespace std;
+
+class devuelveHora {
+public:
+	devuelveHora() {}
+	void imprimeHora()
+	{
+		time_t hora(NULL);
+		cout << ctime(&hora) << endl;
+	}
+};
+
+int main() {
+	devuelveHora prueba;
+	prueba.imprimeHora();
+
+	//system("pause");       
+	return 0;
+}
