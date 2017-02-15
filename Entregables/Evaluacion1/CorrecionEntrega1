@@ -1,0 +1,382 @@
+//Diego Kaleb Valenzuela Carrillo
+//A01018992
+//Evaluación 1
+
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std; 
+//Funciones
+int menu();
+
+//Creación de la clase Videojuego:
+class Videojuego{
+public:
+    //Atributos generales:
+    string nombre;                                  
+    float precio, califiacion;
+    int ano;
+    long int nSerie;
+    
+    //Clonar:
+    virtual Videojuego* clon() = 0;
+    
+    //Sets:
+    void setAll(string n, float p, int a, float c, long int nS){
+        nombre = n;
+        precio = p;
+        ano = a;
+        califiacion = c;
+        nSerie = nS;
+    }
+    void setNombre(string n){nombre = n;}
+    void setPrecio(float p){precio = p;}
+    void setAno(int a){ano  = a;}
+    void setCalificacion(float c){califiacion = c;}
+    void setNSerie(long int nS){nSerie = nS;}
+    
+    //Gets:
+    long int getNserie(){return nSerie;}
+    string getNombre(){return nombre;}
+    float getPrecio(){return precio;}
+    void getAll(){cout << "Titulo: " << nombre <<  "\nPrecio: " << precio << "\nAño: " <<  ano << "\nCalificación: " << califiacion << "\nNúmero de Serie: " << nSerie << endl; }
+    
+    //Funciones requeridas por el cliente:
+    virtual void concepcion() = 0;                  
+    virtual void diseno() = 0;
+    virtual void planificacion() = 0;
+    virtual void produccion() = 0;
+    virtual void pruebas() = 0;
+    
+    //Creación de Factory Method:
+    template<class T>
+    static Videojuego* factoryMethod(){
+        T* t = new T;
+
+        t->concepcion();
+        t->diseno();
+        t->planificacion();
+        t->produccion();
+        t->pruebas();
+        return t;
+    }
+};
+
+//Clase para clonar:
+template <class SubClase>
+class ClonVideojuego : public Videojuego{
+public:
+    virtual Videojuego* clon(){
+        return new SubClase(dynamic_cast<SubClase&>(*this));    
+    }
+};
+
+//Tipos de videojuegos: (Subclases)
+class Estrategia : public ClonVideojuego<Estrategia>{
+public:
+    string subgenero;
+    void setSubgenero(int op){
+        if (op == 1)
+            subgenero = "Lucha";
+        else
+            subgenero = "Arcade";
+    }
+    string getSubgenero(){return subgenero;}
+    void concepcion(){ /*cout << "Operación Concepción en Estrategia" << endl;*/ }          	//Test Purposes
+    void diseno(){ /*cout << "Operación Diseño en Estrategia" << endl;*/ }                      //Test Purposes     //Puede descomentar los couts
+    void planificacion(){ /*cout << "Operación Planificación en Estrategia" << endl;*/ }        //Test Purposes     //para verificar el funcionamiento
+    void produccion(){ /*cout << "Operación Producción en Estrategia" << endl;*/ }              //Test Purposes     //del FactoryMethod
+    void pruebas(){ /*cout << "Operación Pruebas en Estrategia" << endl;*/ }                    //Test Purposes
+    
+};
+
+class Aventura : public ClonVideojuego<Aventura>{
+public:
+    string subgenero;
+    void setSubgenero(int op){
+        if (op == 1)
+            subgenero = "Plataforma";
+        else
+            subgenero = "Grafica";
+    }
+     void concepcion(){ /*cout << "Operación Concepción en Estrategia" << endl;*/ }          	//Test Purposes
+    void diseno(){ /*cout << "Operación Diseño en Estrategia" << endl;*/ }                      //Test Purposes     //Puede descomentar los couts
+    void planificacion(){ /*cout << "Operación Planificación en Estrategia" << endl;*/ }        //Test Purposes     //para verificar el funcionamiento
+    void produccion(){ /*cout << "Operación Producción en Estrategia" << endl;*/ }              //Test Purposes     //del FactoryMethod
+    void pruebas(){ /*cout << "Operación Pruebas en Estrategia" << endl;*/ }                    //Test Purposes
+};		
+
+class Aprendizaje : public ClonVideojuego<Aprendizaje>{
+public:
+    string subgenero;
+    void setSubgenero(int op){
+        if (op == 1)
+            subgenero = "Idiomas";
+        else
+            subgenero = "Musica";
+    }
+    string getSubgenero(){return subgenero;}
+     void concepcion(){ /*cout << "Operación Concepción en Estrategia" << endl;*/ }          	//Test Purposes
+    void diseno(){ /*cout << "Operación Diseño en Estrategia" << endl;*/ }                      //Test Purposes     //Puede descomentar los couts
+    void planificacion(){ /*cout << "Operación Planificación en Estrategia" << endl;*/ }        //Test Purposes     //para verificar el funcionamiento
+    void produccion(){ /*cout << "Operación Producción en Estrategia" << endl;*/ }              //Test Purposes     //del FactoryMethod
+    void pruebas(){ /*cout << "Operación Pruebas en Estrategia" << endl;*/ }                    //Test Purposes
+};
+
+//inventarioacen:
+class inventarioacenDeVideojuegos{
+  public:
+  vector<Videojuego*> inventario;
+  vector<Videojuego*> eliminados;
+  inventarioacenDeVideojuegos(){}
+  void anadirVideojuego(){
+      Videojuego* temp;
+      Estrategia tempEstrategia;
+      Aventura tempAventura;
+      Aprendizaje tempAprendizaje;
+      
+      int op, sub;
+      string nombre;
+      float precio;
+      int ano;
+      float califiacion;
+      long int nSerie;
+      int subgenero;
+      
+      cout << "¿Que tipo de videojuego es?\n(1)Estrategia\n(2)Aventura\n(3)Aprendizaje\t\t:";
+      cin >> op;
+      cout << "Nombre (Palabras separadas por _): ";
+      cin >> nombre;
+      cout << "Precio: ";
+      cin >> precio;
+      cout << "Ano: ";
+      cin >> ano;
+      cout << "Calificacion: ";
+      cin >> califiacion;
+      cout << "Numero de serie (Debe empezar con un numero entero): ";
+      cin >> nSerie;
+      
+      switch(op){
+          case 1:
+            tempEstrategia.setNombre(nombre);
+            tempEstrategia.setPrecio(precio);
+            tempEstrategia.setAno(ano);
+            tempEstrategia.setCalificacion(califiacion);
+            tempEstrategia.setNSerie(nSerie);
+            cout << "¿Cual es el subgenero?\n(1)Lucha\n(2)Arcade\t\t: ";
+            cin >> sub;
+            tempEstrategia.setSubgenero(sub);
+            Estrategia::factoryMethod<Estrategia>();
+            temp = tempEstrategia.clon();
+            inventario.push_back(temp);
+            break;
+        case 2:
+            tempAventura.setNombre(nombre);
+            tempAventura.setPrecio(precio);
+            tempAventura.setAno(ano);
+            tempAventura.setCalificacion(califiacion);
+            tempAventura.setNSerie(nSerie);
+            cout << "¿Cual es el subgenero?\n(1)Plataforma\n(2)Grafica\t\t: ";
+            cin >> sub;
+            tempAventura.setSubgenero(sub);
+            Aventura::factoryMethod<Aventura>();
+            temp = tempAventura.clon();
+            inventario.push_back(temp);
+            break;
+        case 3:
+            tempAprendizaje.setNombre(nombre);
+            tempAprendizaje.setPrecio(precio);
+            tempAprendizaje.setAno(ano);
+            tempAprendizaje.setCalificacion(califiacion);
+            tempAprendizaje.setNSerie(nSerie);
+            cout << "¿Cual es el subgenero?\n(1)Idioma\n(2)Musica\t\t: ";
+            cin >> sub;
+            tempAprendizaje.setSubgenero(sub);
+            Aprendizaje::factoryMethod<Aprendizaje>();
+            temp = tempAprendizaje.clon();
+            inventario.push_back(temp);
+            break;
+        default:
+            cout << "Algo salio mal, intentalo de nuevo mas tarde\nGracias.";
+            break;
+      }
+	cout << "Videojuego agregado.\n";
+  }
+  void eliminarVideojuego(){
+      int aux = 1;
+      long int n;
+        cout << "Numero de serie: ";
+        cin >> n;
+        for(int i = 0; i < inventario.size() && aux == 1; i++){
+          if (inventario[i]->getNserie() == n){
+            eliminados.push_back(inventario[i]);
+            inventario.erase(inventario.begin() + i);                
+            aux = 0;
+            cout << "Videojuego con número de serie " << n << " eliminado" << endl;
+            }
+        }
+        if (aux == 1)
+            cout << "Juego no encontrado" << endl;
+  }
+  void ordenarInventario(){
+    int op, indice;
+    Videojuego *temp;
+	if(inventario.size() > 1){
+	    do{
+            cout << "Ordenar:\n(1)Menor a Mayor precio\n(2)Mayor a menor precio\t\t: ";
+            cin >> op;
+        }while(op < 1 || op > 2);
+	    if (op == 1){
+    	    for (int i = inventario.size() - 1; i >= 0; i--){
+		        temp = inventario[i];
+			    indice = i;
+			    for (int j = 0; j < i; j++){
+    			    if (temp->getPrecio() < inventario[j]->getPrecio()){
+				        temp = inventario[j];
+					    indice = j;
+				    }
+			    }
+			    if (temp != inventario[i]){
+    			    inventario[indice] = inventario[i];
+				    inventario[i] = temp;
+			    }
+		    }
+	    }
+    else if(op == 2){
+	    for (int i = inventario.size() - 1; i >= 0; i--){
+			temp = inventario[i];
+			indice = i;
+			for (int j = 0; j < i; j++){
+			    if (temp->getPrecio() > inventario[j]->getPrecio()){
+					temp = inventario[j];
+					indice = j;
+				}
+			}
+			if (temp != inventario[i]){
+				inventario[indice] = inventario[i];
+				inventario[i] = temp;
+			}
+		}
+	}
+	cout << "Inventario ordenado\n";
+	}
+	else
+	    cout << "El almacen no tiene los suficientes elementos como para ordenarlos\n";
+  }
+  void buscarVideojuego(){
+        int op, aux = 1;
+        long int n;
+        string nombre;
+        
+        do{
+        cout << "Buscar por:\n\t(1)Número de serie\n\t(2)Nombre\n\t\t\t: ";
+        cin >> op;
+        }while(op<1 || op >2);
+        if (op == 1){
+            cout << "Numero de serie: ";
+            cin >> n;
+            for (int i = 0; i < inventario.size() && aux == 1; i++){
+                if (inventario[i]->getNserie() == n){
+                    cout << "Encontrado:" << endl;
+                    inventario[i]->getAll();
+                    aux = 0;
+                }
+            }
+            if (aux == 1)
+                cout << "Videojuego no encontrado" << endl;
+        }
+        else{
+            cout << "Nombre: ";
+            cin >> nombre;
+            for (int i = 0; i < inventario.size() && aux == 1; i++){
+                if (inventario[i]->getNombre() == nombre){
+                    cout << "Encontrado:" << endl;
+                    inventario[i]->getAll();
+                    aux = 0;
+                }
+            }
+            if (aux == 1)
+                cout << "Videojuego no encontrado" << endl;
+        }
+    }
+  void totalInventario(){
+    cout << "El inventario tiene " << inventario.size() << " videojuegos" << endl;
+  }
+  void imprimirInventario(){
+    if (inventario.size() == 0)
+        cout << "inventarioacen vacio" << endl;
+    else{
+    for (int i = 0; i < inventario.size(); i++){
+        inventario[i]->getAll();
+        cout << "\n";
+       }
+    }
+  }
+  void rehacerEliminados(){
+      int x;
+      cout << "¿Cuantas operaciones \"eliminar\" quieres rehacer?: ";
+      cin >> x;
+      if (x > eliminados.size())
+        cout << "No se pueden rehacer mas operaciones de las que se han hecho\n";
+      else{
+          for (int i = eliminados.size(); i > (eliminados.size() -  x); i--){
+              inventario.push_back(eliminados[i]);
+          }
+          cout << "Rehacer completado\n";
+      }
+  }
+};
+
+int main(){
+    int op;
+    inventarioacenDeVideojuegos inventarioacen;
+    
+    do{
+        op = menu();
+        switch(op){
+            case 1:
+                inventarioacen.anadirVideojuego();
+                break;
+            case 2:
+                //ELiminar videojuego
+                inventarioacen.eliminarVideojuego();
+            break;
+            case 3:
+                //Rehacer
+                inventarioacen.rehacerEliminados();
+                break;
+            case 4:
+                //Ordenar
+                inventarioacen.ordenarInventario();
+                break;
+            case 5:
+                //Buscar
+                inventarioacen.buscarVideojuego();
+                break;
+            case 6:
+                //Total
+                inventarioacen.totalInventario();
+                break;
+            case 7:
+                //Imprimir
+                inventarioacen.imprimirInventario();
+                break;
+            case 8:
+                break;
+            default:
+                cout << "Algo salio mal, intenelo de nuevo mas tarde" << endl;
+                break;
+    }
+    }while (op != 8);
+    
+    return 0;
+}
+ 
+int menu(){
+    int op;
+    do{
+        cout << "Menú de inventario:\n\t(1)Agregar videojuego\n\t(2)Eliminar videojuego\n\t(3)Rehacer\n\t(4)Ordenar inventario\n\t(5)Buscar videojuego\n\t(6)Imprimir total de videojuegos\n\t(7)Imprimir inventario\n\t(8)Salir\n\t\t: ";
+        cin >> op;
+    }while (op < 1 || op > 8);
+    return op;
+}
