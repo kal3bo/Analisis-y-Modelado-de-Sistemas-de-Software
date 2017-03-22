@@ -6,6 +6,14 @@
 //  Copyright © 2017 Diego Kaleb Valenzuela Carrillo. All rights reserved.
 //
 
+//
+//  visitorMain.cpp
+//  VisitorPattern
+//
+//  Created by Diego Kaleb Valenzuela Carrillo on 22/03/17.
+//  Copyright © 2017 Diego Kaleb Valenzuela Carrillo. All rights reserved.
+//
+
 #include<iostream>
 using namespace std;
 
@@ -35,10 +43,23 @@ public:
 int Double::countDouble = 0;
 
 class Visitor{
+private:
+    Visitor(){instance = this;}
+    static Visitor* instance;
 public:
     virtual void visit(Integer*) = 0;
     virtual void visit(Double*) = 0;
+    
+    void printInstance(){cout << instance << endl;}
+    static Visitor* getInstance(){
+        if(instance != 0)
+            return instance;
+        else{
+            Visitor();
+            return instance;
+        }
 };
+Visitor* Visitor::instance = 0;
 
 class PresentVisitor : public Visitor{
     PresentVisitor(){instance = this;}
