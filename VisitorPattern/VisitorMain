@@ -6,14 +6,6 @@
 //  Copyright © 2017 Diego Kaleb Valenzuela Carrillo. All rights reserved.
 //
 
-//
-//  visitorMain.cpp
-//  VisitorPattern
-//
-//  Created by Diego Kaleb Valenzuela Carrillo on 22/03/17.
-//  Copyright © 2017 Diego Kaleb Valenzuela Carrillo. All rights reserved.
-//
-
 #include<iostream>
 using namespace std;
 
@@ -28,7 +20,7 @@ public:
 
 class Integer : public Number{
 public:
-    Integer(){quienSoy = "Integer";}
+    Integer(){quienSoy = "Integer ";}
     static int countInts;
     void accept(Visitor*);
 };
@@ -36,45 +28,49 @@ int Integer::countInts = 0;
 
 class Double : public Number{
 public:
-    Double(){quienSoy = "Double";}
+    Double(){quienSoy = "Double ";}
     static int countDouble;
     void accept(Visitor*);
 };
 int Double::countDouble = 0;
 
 class Visitor{
-private:
+/*private:
     Visitor(){instance = this;}
-    static Visitor* instance;
+    static Visitor* instance;*/
 public:
     virtual void visit(Integer*) = 0;
     virtual void visit(Double*) = 0;
-    
-    void printInstance(){cout << instance << endl;}
+    /*void printInstance(){cout << instance << endl;}       //Intento fallido :'v
     static Visitor* getInstance(){
         if(instance != 0)
             return instance;
         else{
             Visitor();
             return instance;
-        }
+            }*/
+    template <class T>
+    static Visitor* getInstance(){
+        static T instance;
+        return &instance;
+    }
 };
-Visitor* Visitor::instance = 0;
+//Visitor* Visitor::instance = 0;
 
 class PresentVisitor : public Visitor{
-    PresentVisitor(){instance = this;}
+    /*PresentVisitor(){instance = this;}
     static PresentVisitor* instance;
 public:
-    static PresentVisitor* getInstance(){
+    static PresentVisitor* getInstance(){               //Intento en clase
         if(instance == 0)
             return new PresentVisitor;
         else
             return instance;
-    }
+    }*/
     void visit(Integer* i){cout << i->getQuienSoy();}
     void visit(Double* d){cout << d->getQuienSoy();}
 };
-PresentVisitor* PresentVisitor::instance = 0;
+//PresentVisitor* PresentVisitor::instance = 0;
 
 class CountVisitor : public Visitor{
 public:
@@ -93,19 +89,25 @@ void Double::accept(Visitor* v){v->visit(this);}
 void Integer::accept(Visitor* v){v->visit(this);}
 
 int main(){
-    AddVisitor a;
+    //Antes:
+    /*AddVisitor a;
     CountVisitor c;
-    PresentVisitor* p = PresentVisitor::getInstance();
+    PresentVisitor* p = PresentVisitor::getInstance();*/
+    
+    Visitor* a = Visitor::getInstance<AddVisitor>();
+    Visitor* c = Visitor::getInstance<CountVisitor>();
+    Visitor* p = Visitor::getInstance<PresentVisitor>();
     
     Number* n[] ={new Integer, new Double};
     
     for(int i=0; i< 5; i++)
         for (int j = 0; j < 2; j++)
-            n[j]->accept(&a);
+            n[j]->accept(a);
     
     n[0]->accept(p);
-    n[0]->accept(&c);
+    n[0]->accept(c);
     cout << endl;
     n[1]->accept(p);
-    n[1]->accept(&c);
+    n[1]->accept(c);
+    cout << endl;
 }
