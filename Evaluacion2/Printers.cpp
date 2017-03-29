@@ -1,40 +1,47 @@
+//Diego Kaleb Valenzuela Carrillo
+//A01018992
+
 #include <iostream>
 #include <string>
 using namespace std;
 
-/*class Visitor;
+class Documentos;
+class Visitor;
 class Impresoras {
 protected:
 	string queImpresoraSoy;
 public:
 	string getImpresora() { return queImpresoraSoy; }
 	virtual void accept(Visitor*) = 0;
+	static int countImpresoras;
+	void getDoc(Documentos d);
 };
+int Impresoras::countImpresoras = 0;
 //Tipos de impresoras:
 class Laser : public Impresoras {
 public:
-	Laser() { queImpresoraSoy = "Soy la impresora Laser..."; }
+	Laser() { queImpresoraSoy = "Soy la impresora Laser e imprimo "; }
 	static int countLaser;
 	void accept(Visitor*);
 };
 int Laser::countLaser = 0;
 class Inyeccion : public Impresoras {
 public:
-	Inyeccion() { queImpresoraSoy = "Soy la impresora de Inyección..."; }
+	Inyeccion() { queImpresoraSoy = "Soy la impresora de Inyeccion e imprimo "; }
 	static int countInyeccion;
 	void accept(Visitor*);
 };
 int Inyeccion::countInyeccion = 0;
 class PDF : public Impresoras {
 public:
-	PDF() { queImpresoraSoy = "Soy la impresora de PDF..."; }
+	PDF() { queImpresoraSoy = "Soy la impresora de PDF e imprimo "; }
 	static int countPDF;
 	void accept(Visitor*);
 };
 int PDF::countPDF = 0;
 class PostScript : public Impresoras {
 public:
-	PostScript() { queImpresoraSoy = "Soy la impresora PostScript";  }
+	PostScript() { queImpresoraSoy = "Soy la impresora PostScript e imprimo "; }
 	static int countPostScript;
 	void accept(Visitor*);
 };
@@ -76,40 +83,37 @@ public:
 	void visit(PDF*) { PDF::countPDF++; }
 	void visit(PostScript*) { PostScript::countPostScript++; }
 };
-
 void Inyeccion::accept(Visitor* v) { v->visit(this); }
 void Laser::accept(Visitor* v) { v->visit(this); }
 void PDF::accept(Visitor* v) { v->visit(this); }
 void PostScript::accept(Visitor* v) { v->visit(this); }
-
 class Documentos {
 protected:
 	string queDocumentoSoy;
 public:
-	string getImpresora() { return queDocumentoSoy; }
+	string getDocumento() { return queDocumentoSoy; }
+	static int countDocuments;
 };
-
+int Documentos::countDocuments = 0;
+void Impresoras::getDoc(Documentos d) { cout << d.getDocumento(); }
 class Texto : public Documentos {
 public:
-	Texto() { queDocumentoSoy = "Soy un documento de texto"; }
+	Texto() { queDocumentoSoy = "un documento de texto"; }
 	static int countTextos;
 };
 int Texto::countTextos = 0;
-
 class TextoFormato : public Documentos {
 public:
-	TextoFormato() { queDocumentoSoy = "Soy un documento de texto con formato"; }
+	TextoFormato() { queDocumentoSoy = "un documento de texto con formato"; }
 	static int countTextosFormato;
 };
 int TextoFormato::countTextosFormato = 0;
-
 class Imagenes : public Documentos {
 public:
-	Imagenes() { queDocumentoSoy = "Soy un documento de imagenes"; }
+	Imagenes() { queDocumentoSoy = "un documento de imagenes"; }
 	static int countImagenes;
 };
 int Imagenes::countImagenes = 0;
-
 class NuevoDocumento : public Documentos {
 public:
 	NuevoDocumento() {
@@ -118,24 +122,27 @@ public:
 	}
 	static int countNuevo;
 };
-int NuevoDocumento::countNuevo = 0;*/
+int NuevoDocumento::countNuevo = 0;
 
 int main() {
-	/*Visitor* a = Visitor::getInstance<AddVisitor>();
+	Visitor* a = Visitor::getInstance<AddVisitor>();
 	Visitor* c = Visitor::getInstance<CountVisitor>();
 	Visitor* p = Visitor::getInstance<PresentVisitor>();
-
 	Impresoras* n[] = { new Laser, new Inyeccion, new PDF, new PostScript };
 	for (int i = 0; i< 5; i++)
 		for (int j = 0; j < 2; j++)
 			n[j]->accept(a);
 	
+	Documentos* d[] = { new Texto, new TextoFormato, new Imagenes };
+
 	n[0]->accept(p);
-	n[0]->accept(c);
+	n[0]->getDoc(*d[0]);
 	cout << endl;
 	n[1]->accept(p);
-	n[1]->accept(c);*/
-	cout << "PenesxD" << endl;
-	system("pause");
+	n[1]->getDoc(*d[1]);
+	cout << endl;
+	
+	string x;
+	cin >> x;
 	return 0;
 }
