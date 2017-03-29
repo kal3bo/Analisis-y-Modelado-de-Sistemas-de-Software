@@ -14,34 +14,35 @@ public:
 	string getImpresora() { return queImpresoraSoy; }
 	virtual void accept(Visitor*) = 0;
 	static int countImpresoras;
+	static int getCountImpresoras() { return countImpresoras; }
 	void getDoc(Documentos d);
 };
 int Impresoras::countImpresoras = 0;
 //Tipos de impresoras:
 class Laser : public Impresoras {
 public:
-	Laser() { queImpresoraSoy = "Soy la impresora Laser e imprimo "; }
+	Laser() { queImpresoraSoy = "Soy la impresora Laser e imprimo "; countImpresoras++; }
 	static int countLaser;
 	void accept(Visitor*);
 };
 int Laser::countLaser = 0;
 class Inyeccion : public Impresoras {
 public:
-	Inyeccion() { queImpresoraSoy = "Soy la impresora de Inyeccion e imprimo "; }
+	Inyeccion() { queImpresoraSoy = "Soy la impresora de Inyeccion e imprimo "; countImpresoras++;}
 	static int countInyeccion;
 	void accept(Visitor*);
 };
 int Inyeccion::countInyeccion = 0;
 class PDF : public Impresoras {
 public:
-	PDF() { queImpresoraSoy = "Soy la impresora de PDF e imprimo "; }
+	PDF() { queImpresoraSoy = "Soy la impresora de PDF e imprimo "; countImpresoras++;}
 	static int countPDF;
 	void accept(Visitor*);
 };
 int PDF::countPDF = 0;
 class PostScript : public Impresoras {
 public:
-	PostScript() { queImpresoraSoy = "Soy la impresora PostScript e imprimo "; }
+	PostScript() { queImpresoraSoy = "Soy la impresora PostScript e imprimo "; countImpresoras++;}
 	static int countPostScript;
 	void accept(Visitor*);
 };
@@ -93,6 +94,7 @@ protected:
 public:
 	string getDocumento() { return queDocumentoSoy; }
 	static int countDocuments;
+	static int getCountDocumentos() { return countDocuments; }
 };
 int Documentos::countDocuments = 0;
 void Impresoras::getDoc(Documentos d) { cout << d.getDocumento(); }
@@ -132,7 +134,7 @@ int main() {
 	for (int i = 0; i< 5; i++)
 		for (int j = 0; j < 2; j++)
 			n[j]->accept(a);
-	
+
 	Documentos* d[] = { new Texto, new TextoFormato, new Imagenes };
 
 	n[0]->accept(p);
@@ -141,8 +143,6 @@ int main() {
 	n[1]->accept(p);
 	n[1]->getDoc(*d[1]);
 	cout << endl;
-	
-	string x;
-	cin >> x;
+
 	return 0;
 }
