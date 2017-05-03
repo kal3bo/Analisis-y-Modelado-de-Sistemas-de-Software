@@ -8,7 +8,7 @@ using namespace std;
 class Visitor;
 class Asteroid;
 class Spacecrafts;
-class Planets;
+class Planet;
 
 class Spacecrafts {
 protected:
@@ -17,6 +17,7 @@ public:
 	string getSpace() { return queSoy; }
 	virtual void accept(Visitor*) = 0;
 	void getAsteroid(Asteroid a);
+	void getPlanet(Planet p);
 };
 class PlanetExplorationShips : public Spacecrafts {
 public:
@@ -50,6 +51,22 @@ public:
 	IonMeteorites() { queAsteroidSoy = "Ion Meteorite"; }
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
+class Planet{
+  protected:
+  string quePlanetaSoy;
+  public:
+  string getPlanet() { return quePlanetaSoy; }
+};
+void Spacecrafts::getPlanet(Planet p) { cout << " collisions with a " << p.getPlanet(); }
+class DesertPlanet : public Planet{
+    public:
+    DesertPlanet() { quePlanetaSoy = "Desert Planet"; }
+};
+class EarthAnalog : public Planet{
+    public:
+    EarthAnalog() { quePlanetaSoy = "Earth Analog"; }
+};
+////////////////////////////////////////////////////////////////////////////////////////////
 class Visitor {
 public:
 	virtual void visit(PlanetExplorationShips*) = 0;
@@ -73,16 +90,22 @@ void PlanetObservationShips::accept(Visitor* v) { v->visit(this); }
 //////////////////////////////////////////////////////////////////////////////////////////// 
 int main() {
     
-	Visitor* p = Visitor::getInstance<PresentVisitor>();
-	Spacecrafts* n[] = { new PlanetExplorationShips, new ColonizationShips, new PlanetObservationShips };
-	
-	Asteroid* d[] = { new StonyMeteorites, new IonMeteorites };
+	Visitor* V = Visitor::getInstance<PresentVisitor>();
+	Spacecrafts* S[] = { new PlanetExplorationShips, new ColonizationShips, new PlanetObservationShips };
+	Asteroid* A[] = { new StonyMeteorites, new IonMeteorites };
+	Planet* P[] = {new DesertPlanet, new EarthAnalog };
 
-	n[0]->accept(p);
-	n[0]->getAsteroid(*d[0]);
+	S[0]->accept(V);
+	S[0]->getAsteroid(*A[0]);
 	cout << endl;
-	n[1]->accept(p);
-	n[1]->getAsteroid(*d[1]);
+	S[1]->accept(V);
+	S[1]->getAsteroid(*A[1]);
+	cout << endl;
+	S[2]->accept(V);
+	S[2]->getPlanet(*P[0]);
+	cout << endl;
+	S[0]->accept(V);
+	S[0]->getPlanet(*P[1]);
 	cout << endl;
 	
 	return 0;
